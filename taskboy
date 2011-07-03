@@ -1,0 +1,64 @@
+#!/usr/bin/python
+###############################################################################
+# taskboy - create new note in Tomboy with individual tasks in taskwarrior.
+# 
+# Copyright 2011, Pedram Hayati, pi3ch@gmx.com
+# All rights reserved.
+# Inspired by tasknote by Alan Bowen
+#
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the
+#
+#     Free Software Foundation, Inc.,
+#     51 Franklin Street, Fifth Floor,
+#     Boston, MA
+#     02110-1301
+#     USA
+#
+###############################################################################
+
+notefield = 'Description' #what task field used as a title for a note (e.g. Description, Project)
+
+import os, sys, subprocess, re, dbus, gobject, dbus.glib
+
+#print usage if task id is not provided and exit
+if len(sys.argv) < 2:
+    path, scriptname = os.path.split(sys.argv[0]) 
+    print "Usage: %s <Task id>" % scriptname
+    sys.exit(1)
+
+taskproc = subprocess.Popen(['task', 'rc._forcecolor=no', 'rc.defaultwidth=300', sys.argv[1]], shell=False, stdout=subprocess.PIPE)
+taskinfo = taskproc.communicate()
+
+tasktitle = re.search(r''+notefield+' (.*)', taskinfo[0], re.M|re.I)
+if tasktitle: 
+    tasktitle = tasktitle.group(1).strip()
+else:
+    print "No task %s found!" % notefield
+    sys.exit(1)
+
+#initiate dbus connection, if tomboy is not running it would start tomboy
+bus = dbus.SessionBus()
+obj = bus.get_object("org.gnome.Tomboy", "/org/gnome/Tomboy/RemoteControl")
+tomboy = dbus.Interface(obj, "org.gnome.Tomboy.RemoteControl")
+
+#does note already exist
+note_uri = tomboy.FindNote(tasktitle)
+if note_uri != "":
+    tomboy.DisplayNote(note_uri)
+else:
+    new_note = tomboy.CreateNamedNote(tasktitle)
+    tomboy.DisplayNote(new_note)
+    subprocess.Popen(['task', sys.argv[1], 'annotate', 'Note']) #annotate task with note
+
