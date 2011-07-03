@@ -3,7 +3,7 @@ h1. Taskboy
 "Screenshot":http://i.imgur.com/Xa2DL.png
 !http://i.imgur.com/Xa2DL.png!
 
-Taskboy is a python script that creates new notes in Tomboy with associated task in Taskwarrior. By simply running taskboy <task id> you can create a new or modify already created note. An annotation would be added to associated task upon note creation. The title (description) of the task would the title of the new created note.
+Taskboy is a python script that creates new notes in Tomboy with associated task in Taskwarrior. By simply running taskboy [Task ID] you can create a new or modify already created note. An annotation would be added to associated task upon note creation. The title (description) of the task would be the title of the new created note.
 
 h2. Dependencies
 
@@ -11,13 +11,14 @@ Taskwarrior: http://www.taskwarrior.org/ (note: taskwarrior should be in the PAT
 Python
 Tomboy 
 
-Taskboy has been tested on Ubuntu 10.04 and 11.04.
+Taskboy has been tested within Ubuntu 10.04 and 11.04.
 
 
 h2. Installation
 
 # Download and copy taskboy to home directory (e.g. /home/USERNAME/bin)
 # Make taskboy executable (i.e. chmod a+x taskboy)
+# Put taskboy in the system path
 
 h2. Usage
 
@@ -27,7 +28,7 @@ Note: Taskboy would automatically run Tomboy if it is not running.
 
 h2. Customize
 
-You can set the title of the new created note to the task's project. To do so open taskboy, find the line 
+You can set the title of the new created note to the task's project title. To do so open taskboy, find the line 
 notefield = 'Description'
 and set it to
 notefield = 'Project'
