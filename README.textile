@@ -1,6 +1,7 @@
 h1. Taskboy
 
 "Screenshot":http://i.imgur.com/Xa2DL.png
+!http://imgur.com/Xa2DL!
 
 Taskboy is a python script that creates new notes in Tomboy with associated task in Taskwarrior. By simply running taskboy <task id> you can create a new or modify already created note. An annotation would be added to associated task upon note creation. The title (description) of the task would the title of the new created note.
 
