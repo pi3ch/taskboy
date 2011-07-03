@@ -21,7 +21,7 @@ h2. Installation
 
 h2. Usage
 
-taskboy <task id>
+taskboy \<task id\>
 e.g. taskboy 7
 Note: Taskboy would automatically run Tomboy if it is not running.
 
